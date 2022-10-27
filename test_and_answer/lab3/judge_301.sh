@@ -1,4 +1,4 @@
-cd /home/ubuntu/miniC/lab3/task301
+cd /home/cse/miniC/lab3/task301
 if [ -f "foo.output" ];then	
 rm foo.output > /dev/null 2>&1 		#（清除上一次的评测程序）
 fi

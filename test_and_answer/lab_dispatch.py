@@ -20,8 +20,6 @@ def lab1(task_id: str) -> str:
                       "/test_and_answer/lab1/" + task_id, testcase)
         if res == "":
             res = "success"
-            if task_id == "judge_107.sh":
-                os.popen("chmod o+rw /home/ubuntu/miniC/lab2/ -R")
         else:
             res = "Fail\n" + res
     else:
@@ -39,8 +37,6 @@ def lab2(task_id: str) -> str:
                       "/test_and_answer/lab2/" + task_id, testcase)
         if res == "":
             res = "success"
-            if task_id == "judge_203.sh":
-                os.popen("chmod o+rw /home/ubuntu/miniC/lab3/ -R")
         else:
             res = "Fail\n" + res
     else:
@@ -59,8 +55,6 @@ def lab3(task_id: str) -> str:
                       "/test_and_answer/lab3/" + task_id, testcase)
         if res == "":
             res = "success"
-            if task_id == "judge_305.sh":
-                os.popen("chmod o+rw /home/ubuntu/miniC/lab4/ -R")
         else:
             res = "Fail\n" + res
     else:
@@ -79,8 +73,6 @@ def lab4(task_id: str) -> str:
                       "/test_and_answer/lab4/" + task_id, testcase)
         if res == "":
             res = "success"
-            if task_id == "judge_405.sh":
-                os.popen("chmod o+rw /home/ubuntu/miniC/lab5/ -R")
         else:
             res = "Fail\n" + res
     else:
@@ -104,10 +96,13 @@ def lab5(task_id: str) -> str:
         res = "lab5 judge run error"
     return res
 
+def update(lab_id:str):
+    res = os.popen("cd /home/ubuntu/miniC;git pull")
+    return res.read()
 
 def lab_dispatch(lab_id: str):
     lab_map = {"lab1": lab1, "lab2": lab2,
-               "lab3": lab3, "lab4": lab4, "lab5": lab5}
+               "lab3": lab3, "lab4": lab4, "lab5": lab5,"update":update}
 
     return lab_map[lab_id]
 

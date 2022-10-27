@@ -1,4 +1,4 @@
-cd /home/ubuntu/miniC/lab4/task401
+cd /home/cse/miniC/lab4/task401
 touch tokens.txt										#新建文本，准备存放程序输出结果
 touch error.txt											#新建文本，准备存放错误信息										#读取键盘输入到typ中
 

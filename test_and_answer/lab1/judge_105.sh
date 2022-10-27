@@ -1,5 +1,5 @@
 #!/bin/bash
-cd /home/ubuntu/miniC/lab1/task105
+cd /home/cse/miniC/lab1/task105
 make clean >/dev/null 2>&1  						#make clean（清除上一次的评测程序）
 touch result.txt    									#新建文本，准备存放程序输出结果
 touch error.txt											#新建文本，准备存放错误信息
