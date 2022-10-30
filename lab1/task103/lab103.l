@@ -6,4 +6,4 @@ a*ca*            {printf("3");}
 int main()
 {
         yylex();
-} 
+}
