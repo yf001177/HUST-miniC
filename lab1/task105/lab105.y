@@ -8,6 +8,10 @@
 
 %define api.value.type {double}
 %token NUM
+%left '+' '-'
+%left '*' '/'
+%right 'n'
+%right '^'
 
 %% 
 /* Grammar rules and actions follow.  */
@@ -23,9 +27,14 @@ line:
 ;
 
 exp:
-  NUM           { $$ = $1;           }
+NUM        {$$ = $1;}
  /* begin */
-
+|exp exp '+' {$$=$1+$2;}
+|exp exp '-' {$$=$1-$2;}
+|exp exp '*' {$$=$1*$2;}
+|exp exp '/' {$$=$1/$2;}
+|exp exp '^' {$$=pow($1,$2);}
+|exp 'n' {$$=-$1;}
  /* end */
 ;
 

@@ -36,6 +36,10 @@ void yyerror(const char *s);
 %token LP
 %token RP
 
+%left ADD SUB
+%left MUL DIV
+%right EXPO
+
 %%
 calclist:
 	%empty
@@ -44,10 +48,14 @@ calclist:
 exp:term
    	|exp ADD exp {$$=$1+$3;}
 	|exp SUB exp {$$=$1-$3;}
+	|exp MUL exp {$$=$1*$3;}
+	|exp DIV exp {$$=$1/$3;}
+	|exp EXPO exp {$$=pow($1,$3);}
 	|error {}
 	;
 
-term:NUM
+term:NUM {$$=$1;}
+	|SUB NUM     {$$=-$2;}
 	;
 %%
 

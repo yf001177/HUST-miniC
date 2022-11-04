@@ -446,16 +446,16 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  2
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   3
+#define YYLAST   13
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  9
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  4
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  5
+#define YYNRULES  9
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  7
+#define YYNSTATES  15
 
 #define YYUNDEFTOK  2
 #define YYMAXUTOK   263
@@ -503,7 +503,7 @@ static const yytype_int8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    24,    24,    25,    26,    29
+       0,    24,    24,    25,    26,    27,    28,    29,    30,    33
 };
 #endif
 
@@ -526,7 +526,7 @@ static const yytype_int16 yytoknum[] =
 };
 # endif
 
-#define YYPACT_NINF (-4)
+#define YYPACT_NINF (-5)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -540,7 +540,8 @@ static const yytype_int16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      -4,     0,    -4,    -4,    -3,    -4,    -4
+      -5,     9,    -5,    -5,    -4,    -5,    -5,    10,    10,    10,
+      10,     3,     3,    -5,    -5
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -548,13 +549,14 @@ static const yytype_int8 yypact[] =
      means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       2,     0,     1,     5,     0,     4,     3
+       2,     0,     1,     9,     0,     4,     3,     0,     0,     0,
+       0,     5,     6,     7,     8
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-      -4,    -4,    -4,    -4
+      -5,    -5,    -2,    -5
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
@@ -568,31 +570,34 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-       2,     6,     0,     3
+       6,     7,     8,     9,    10,    11,    12,    13,    14,     2,
+       9,    10,     3,     3
 };
 
 static const yytype_int8 yycheck[] =
 {
-       0,     4,    -1,     3
+       4,     5,     6,     7,     8,     7,     8,     9,    10,     0,
+       7,     8,     3,     3
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
      symbol of state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,    10,     0,     3,    11,    12,     4
+       0,    10,     0,     3,    11,    12,     4,     5,     6,     7,
+       8,    11,    11,    11,    11
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_int8 yyr1[] =
 {
-       0,     9,    10,    10,    11,    12
+       0,     9,    10,    10,    11,    11,    11,    11,    11,    12
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_int8 yyr2[] =
 {
-       0,     2,     0,     3,     1,     1
+       0,     2,     0,     3,     1,     3,     3,     3,     3,     1
 };
 
 
@@ -1290,11 +1295,41 @@ yyreduce:
   case 3:
 #line 25 "lab106.y"
                           {printf("=%.10g\n",yyvsp[-1]);}
-#line 1294 "scanner.tab.c"
+#line 1299 "scanner.tab.c"
+    break;
+
+  case 5:
+#line 27 "lab106.y"
+                     {yyval=yyvsp[-2]+yyvsp[0];}
+#line 1305 "scanner.tab.c"
+    break;
+
+  case 6:
+#line 28 "lab106.y"
+                     {yyval=yyvsp[-2]-yyvsp[0];}
+#line 1311 "scanner.tab.c"
+    break;
+
+  case 7:
+#line 29 "lab106.y"
+                     {yyval=yyvsp[-2]*yyvsp[0];}
+#line 1317 "scanner.tab.c"
+    break;
+
+  case 8:
+#line 30 "lab106.y"
+                     {yyval=yyvsp[-2]/yyvsp[0];}
+#line 1323 "scanner.tab.c"
+    break;
+
+  case 9:
+#line 33 "lab106.y"
+                        {yyval=yyvsp[0];}
+#line 1329 "scanner.tab.c"
     break;
 
 
-#line 1298 "scanner.tab.c"
+#line 1333 "scanner.tab.c"
 
       default: break;
     }
@@ -1526,7 +1561,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 35 "lab106.y"
+#line 40 "lab106.y"
 
 
 /* The lexical analyzer returns a double floating point
