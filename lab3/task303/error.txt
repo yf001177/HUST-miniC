@@ -1,0 +1,78 @@
+bison -d -v parser.y -o parser.cpp
+parser.y:36.20-29: error: symbol ‘ExtDefList’ is used, but is not defined as a token and has no rules; did you mean ‘ExtDecList’?
+   36 | %type  <p> program ExtDefList ExtDef Specifier ExtDecList DecList Var...
+      |                    ^~~~~~~~~~
+      |                    ExtDecList
+parser.y:36.31-36: warning: symbol ‘ExtDef’ is used, but is not defined as a token and has no rules; did you mean ‘Def’? [-Wother]
+   36 | %type  <p> program ExtDefList ExtDef Specifier ExtDecList DecList Var...
+      |                               ^~~~~~
+      |                               Def
+parser.y:36.38-46: warning: symbol ‘Specifier’ is used, but is not defined as a token and has no rules; did you mean ‘StructSpecifier’? [-Wother]
+   36 | %type  <p> program ExtDefList ExtDef Specifier ExtDecList DecList Var...
+      |                                      ^~~~~~~~~
+      |                                      StructSpecifier
+parser.y:36.48-57: warning: symbol ‘ExtDecList’ is used, but is not defined as a token and has no rules; did you mean ‘DecList’? [-Wother]
+   36 | %type  <p> program ExtDefList ExtDef Specifier ExtDecList DecList Var...
+      |                                                ^~~~~~~~~~
+      |                                                DecList
+parser.y:36.59-65: warning: symbol ‘DecList’ is used, but is not defined as a token and has no rules; did you mean ‘DefList’? [-Wother]
+   36 | %type  <p> program ExtDefList ExtDef Specifier ExtDecList DecList Var...
+      |                                                           ^~~~~~~
+      |                                                           DefList
+parser.y:36.67-72: warning: symbol ‘VarDec’ is used, but is not defined as a token and has no rules; did you mean ‘ParamDec’? [-Wother]
+   36 | %type  <p> program ExtDefList ExtDef Specifier ExtDecList DecList Var...
+      |                                                                   ^~~
+      |                                                                   ParamDec
+parser.y:36.74-79: warning: symbol ‘FunDec’ is used, but is not defined as a token and has no rules; did you mean ‘Dec’? [-Wother]
+   36 | ...t VarDec FunDec CompSt DefList VarList ParamDec Dec Def StmtList E...
+      |             ^~~~~~
+      |             Dec
+parser.y:36.81-86: warning: symbol ‘CompSt’ is used, but is not defined as a token and has no rules [-Wother]
+   36 | ...c FunDec CompSt DefList VarList ParamDec Dec Def StmtList Exp Stmt...
+      |             ^~~~~~
+parser.y:36.88-94: warning: symbol ‘DefList’ is used, but is not defined as a token and has no rules; did you mean ‘DecList’? [-Wother]
+   36 | ...c CompSt DefList VarList ParamDec Dec Def StmtList Exp Stmt Args O...
+      |             ^~~~~~~
+      |             DecList
+parser.y:36.96-102: warning: symbol ‘VarList’ is used, but is not defined as a token and has no rules [-Wother]
+   36 | ... DefList VarList ParamDec Dec Def StmtList Exp Stmt Args OptTag  T...
+      |             ^~~~~~~
+parser.y:36.104-111: warning: symbol ‘ParamDec’ is used, but is not defined as a token and has no rules; did you mean ‘VarDec’? [-Wother]
+   36 | ... VarList ParamDec Dec Def StmtList Exp Stmt Args OptTag  Tag Struc...
+      |             ^~~~~~~~
+      |             VarDec
+parser.y:36.113-115: warning: symbol ‘Dec’ is used, but is not defined as a token and has no rules; did you mean ‘VarDec’? [-Wother]
+   36 | ...ParamDec Dec Def StmtList Exp Stmt Args OptTag  Tag StructSpecifier
+      |             ^~~
+      |             VarDec
+parser.y:36.117-119: warning: symbol ‘Def’ is used, but is not defined as a token and has no rules; did you mean ‘ExtDef’? [-Wother]
+   36 | ...mDec Dec Def StmtList Exp Stmt Args OptTag  Tag StructSpecifier
+      |             ^~~
+      |             ExtDef
+parser.y:36.121-128: warning: symbol ‘StmtList’ is used, but is not defined as a token and has no rules; did you mean ‘Stmt’? [-Wother]
+   36 | ... Dec Def StmtList Exp Stmt Args OptTag  Tag StructSpecifier
+      |             ^~~~~~~~
+      |             Stmt
+parser.y:36.130-132: warning: symbol ‘Exp’ is used, but is not defined as a token and has no rules [-Wother]
+   36 | ...StmtList Exp Stmt Args OptTag  Tag StructSpecifier
+      |             ^~~
+parser.y:36.134-137: warning: symbol ‘Stmt’ is used, but is not defined as a token and has no rules; did you mean ‘StmtList’? [-Wother]
+   36 | ...List Exp Stmt Args OptTag  Tag StructSpecifier
+      |             ^~~~
+      |             StmtList
+parser.y:36.139-142: warning: symbol ‘Args’ is used, but is not defined as a token and has no rules [-Wother]
+   36 | ...Exp Stmt Args OptTag  Tag StructSpecifier
+      |             ^~~~
+parser.y:36.144-149: warning: symbol ‘OptTag’ is used, but is not defined as a token and has no rules; did you mean ‘Tag’? [-Wother]
+   36 | ...tmt Args OptTag  Tag StructSpecifier
+      |             ^~~~~~
+      |             Tag
+parser.y:36.152-154: warning: symbol ‘Tag’ is used, but is not defined as a token and has no rules; did you mean ‘OptTag’? [-Wother]
+   36 | ... OptTag  Tag StructSpecifier
+      |             ^~~
+      |             OptTag
+parser.y:36.156-170: warning: symbol ‘StructSpecifier’ is used, but is not defined as a token and has no rules; did you mean ‘Specifier’? [-Wother]
+   36 | ...Tag  Tag StructSpecifier
+      |             ^~~~~~~~~~~~~~~
+      |             Specifier
+make: *** [Makefile:8: parser.cpp] Error 1
