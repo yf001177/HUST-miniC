@@ -1,4 +1,4 @@
-#include <iostream>
+ #include <iostream>
 
 #include <string>
 #include <vector>
@@ -86,21 +86,88 @@ int main(int argc, char *argv[]) {
       FunctionType::get(builder->getInt32Ty(), putArgs, false);
   Function *putFunc = Function::Create(putType, Function::ExternalLinkage,
                                        "putchar", theModule.get());
-  //默认输入函数getchar
-  std::vector<Type *> getArgs;
 
-  FunctionType *getType =
-      FunctionType::get(builder->getInt32Ty(), getArgs, false);
-  Function *getFunc = Function::Create(getType, Function::ExternalLinkage,
-                                       "getchar", theModule.get());
-  //根据输入的单字符，判断，如果是'a'，则输出'Y'，否则输出'N'。
   //设置返回类型
-  //begin
-  
+  Type *retType = Type::getInt32Ty(*theContext);
+  std::vector<Type *> argsTypes;     //参数类型
+  std::vector<std::string> argNames; //参数名
+  //无参，所以不push内容
+  //得到函数类型
+  FunctionType *ft = FunctionType::get(retType, argsTypes, false);
+  //创建函数
+  Function *f =
+      Function::Create(ft, Function::ExternalLinkage, "main", theModule.get());
+  //为函数的参数设置名字
+  unsigned idx = 0;
+  for (auto &arg : f->args()) {
+    arg.setName(argNames[idx++]);
+  }
+  //创建第一个基本块 函数入口
+  BasicBlock *bb = BasicBlock::Create(*theContext, "entry", f);
+  builder->SetInsertPoint(bb);
+  // 为参数变量申请空间
+  // 无参
+  // 创建第一个变量 a
+  AllocaInst *alloca_a =
+      builder->CreateAlloca(Type::getInt32Ty(*theContext), nullptr, "a");
+  //得到常量1
+  Value *const_1 = ConstantInt::get(*theContext, APInt(32, 'H', true));
+  //初始化
+  builder->CreateStore(const_1, alloca_a);
+  Function *calleeF = theModule->getFunction("putchar");
+  //处理参数
+  std::vector<Value *> argsV;
+  //加载a
+  Value *load_a4 =
+      builder->CreateLoad(alloca_a->getAllocatedType(), alloca_a, "a");
+  argsV.push_back(load_a4);
+  //判断参数是否符合 自行处理
+  Value *callputchar = builder->CreateCall(calleeF, argsV, "callputchar");
+  // begin
+  argsV.clear();
+  Value *const_2 = ConstantInt::get(*theContext,APInt(32,'U',true));
+  builder->CreateStore(const_2,alloca_a);
+  Value *load_a5=builder->CreateLoad(alloca_a->getAllocatedType(),alloca_a,"a");
+  argsV.push_back(load_a5);
+  callputchar=builder->CreateCall(calleeF,argsV,"callputchar");
 
+  argsV.clear();
+  Value *const_3 = ConstantInt::get(*theContext,APInt(32,'S',true));
+  builder->CreateStore(const_3,alloca_a);
+  Value *load_a6=builder->CreateLoad(alloca_a->getAllocatedType(),alloca_a,"a");
+  argsV.push_back(load_a6);
+  callputchar=builder->CreateCall(calleeF,argsV,"callputchar");
+
+  argsV.clear();
+  Value *const_4 = ConstantInt::get(*theContext,APInt(32,'T',true));
+  builder->CreateStore(const_4,alloca_a);
+  Value *load_a7=builder->CreateLoad(alloca_a->getAllocatedType(),alloca_a,"a");
+  argsV.push_back(load_a7);
+  callputchar=builder->CreateCall(calleeF,argsV,"callputchar");
+
+  argsV.clear();
+  Value *const_5 = ConstantInt::get(*theContext,APInt(32,'C',true));
+  builder->CreateStore(const_5,alloca_a);
+  Value *load_a8=builder->CreateLoad(alloca_a->getAllocatedType(),alloca_a,"a");
+  argsV.push_back(load_a8);
+  callputchar=builder->CreateCall(calleeF,argsV,"callputchar");
+
+  argsV.clear();
+  Value *const_6 = ConstantInt::get(*theContext,APInt(32,'S',true));
+  builder->CreateStore(const_6,alloca_a);
+  Value *load_a9=builder->CreateLoad(alloca_a->getAllocatedType(),alloca_a,"a");
+  argsV.push_back(load_a9);
+  callputchar=builder->CreateCall(calleeF,argsV,"callputchar");
+
+  argsV.clear();
+  Value *const_7 = ConstantInt::get(*theContext,APInt(32,'E',true));
+  builder->CreateStore(const_7,alloca_a);
+  Value *load_a10=builder->CreateLoad(alloca_a->getAllocatedType(),alloca_a,"a");
+  argsV.push_back(load_a10);
+  callputchar=builder->CreateCall(calleeF,argsV,"callputchar");
   // end
   //设置返回值
-  builder->CreateRet(const_0);
+  builder->CreateRet(const_1);
   verifyFunction(*f);
   // Run the optimizer on the function.
   // theFPM->run(*f);

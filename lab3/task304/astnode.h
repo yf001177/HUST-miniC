@@ -166,8 +166,10 @@ public:
 class NSpecifier : public Node {
 public:
   std::string type;
-  NSpecifier() {}
-  NSpecifier(std::string &type) : type(type) {}
+  NStructSpecifier &nStructSpecifier;
+  int flag;
+  NSpecifier(NStructSpecifier &nStructSpecifier) {flag=0;}
+  NSpecifier(std::string &type) : type(type) {flag=1;}
   std::string getNodeName() { return "Specifier"; }
   int parse();
 
@@ -413,7 +415,7 @@ public:
   NExtDef &nExtDef;
   NExtDefList *nExtDefList = nullptr;
   NExtDefList(NExtDef &nExtDef, NExtDefList *nExtDefList)
-      : nExtDef(nExtDef), nExtDefList(nExtDefList) {}
+      : nExtDef(nExtDef), nExtDefList(*nExtDefList) {}
   std::string getNodeName() { return "ExtDefList"; }
   int parse();
 

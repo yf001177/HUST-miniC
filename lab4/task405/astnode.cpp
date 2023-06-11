@@ -67,6 +67,7 @@ Function *getFunction(std::string Name) {
   // First, see if the function has already been added to the current module.
   if (auto *F = theModule->getFunction(Name))
     return F;
+  return nullptr;
 }
 
 /// CreateEntryBlockAlloca - Create an alloca instruction in the entry block
@@ -557,26 +558,55 @@ Value *NInteger::codegen() {
 Value *NFloat::codegen() {
   // begin
 
-  return nullptr;
+  return ConstantFP::get(*theContext, APFloat(value));
   // end
 }
 Value *NChar::codegen() {
   // begin
 
-  return nullptr;
+  return ConstantInt::get(*theContext, APInt(32, value, true));
   // end
 }
 Value *NIdentifier::codegen() {
   // begin
-
-  return nullptr;
+  auto temp=namedValues.find(name);
+  if(temp==namedValues.end()){
+    if((temp=curNamedValues.find(name))==curNamedValues.end()){
+      printSemanticError(1,line,"");
+      return nullptr;
+    }
+  }
+  AllocaInst* ret=temp->second;
+  return builder->CreateLoad(ret->getAllocatedType(),ret,name);
   // end
 }
 Value *NArgs::codegen() { return exp.codegen(); }
 Value *NMethodCall::codegen() {
   // begin
-
-  return nullptr;
+  Function* callee=theModule->getFunction(id.name);
+  if(callee==nullptr){
+    printSemanticError(2,line,"");
+    return nullptr;
+  }
+  std::vector<Value *>argsV;
+  NArgs* current=nargs;
+  auto calleeFT=callee->getFunctionType();
+  auto paramcount=calleeFT->getNumParams();
+  for (int i=0;i<paramcount;i++){
+    if(current==nullptr){
+      printSemanticError(8,line,"");
+      return nullptr;
+    }
+    Value* exp=current->codegen();
+    if(exp->getType()->getPointerTo()!=calleeFT->getParamType(i)->getPointerTo()){
+      printSemanticError(8,line,"");
+      return nullptr;
+    }
+    argsV.push_back(exp);
+    current=current->nArgs;
+  }
+  Value* callValue=builder->CreateCall(callee,argsV,id.name);
+  return callValue;
   // end
 }
 Value *NParenOperator::codegen() { return exp.codegen(); }
@@ -588,14 +618,80 @@ Value *NSingleOperator::codegen() {
 }
 Value *NBinaryOperator::codegen() {
   // begin
-
-  return nullptr;
+  Value* lexp=lhs.codegen();
+  Value* rexp=rhs.codegen();
+  Value* ret=nullptr;
+  if(lexp==nullptr||rexp==nullptr){
+    return nullptr;
+  }
+  if(name=="PLUS"){
+    ret=builder->CreateAdd(lexp,rexp,"add");
+  }
+  else if(name=="MINUS"){
+    ret=builder->CreateSub(lexp,rexp,"sub");
+  }
+  else if(name=="STAR"){
+    ret=builder->CreateMul(lexp,rexp,"mul");
+  }
+  else if(name=="DIV"){
+    ret=builder->CreateSDiv(lexp,rexp,"div");
+  }
+  else if(name=="OR"){
+    ret=builder->CreateOr(lexp,rexp,"or");
+  }
+  else if(name.substr(0, 5) == "RELOP"){
+    std::string op=name.substr(5);
+    ICmpInst::Predicate pred;
+    if(op == "=="){
+      pred = ICmpInst::ICMP_EQ;
+    }else if(op == "<="){
+      pred = ICmpInst::ICMP_SLE;
+    }else if(op == ">="){
+      pred = ICmpInst::ICMP_SGE;
+    }else if(op == "!="){
+      pred = ICmpInst::ICMP_NE;
+    }else if(op == "<"){
+      pred = ICmpInst::ICMP_SLT;
+    }
+    ret = builder->CreateICmp(pred,lexp,rexp,"comp");
+  }
+  return ret;
   // end
 }
 Value *NAssignment::codegen() {
   // Assignment requires the LHS to be an identifier.
   // begin
-
+  if(lhs.name==""){
+    printSemanticError(6,line,"");
+    return nullptr;
+  }
+  auto temp=namedValues.find(lhs.name);
+  if(temp==namedValues.end()){
+    if((temp=curNamedValues.find(lhs.name))==curNamedValues.end()){
+      printSemanticError(1,line,"");
+      return nullptr;
+    }
+  }
+  AllocaInst* ret=temp->second;
+  Value* rexp=rhs.codegen();
+  if(rexp==nullptr){
+    return nullptr;
+  }
+  auto rexpT=rexp->getType()->getPointerTo();
+  if(ret->getType()==rexpT){
+    if(name=="ASSIGNOP"){
+      return builder->CreateStore(rexp,ret);
+    }
+    else if(name == "MINUSASS"){
+      Value* left = lhs.codegen();
+      Value* temp = builder->CreateSub(left,rexp,"sub");
+      return builder->CreateStore(temp,ret);
+    }
+  }
+  else{
+    printSemanticError(5,line,"");
+    return nullptr;
+  }
   return nullptr;
   // end
 }
@@ -664,14 +760,36 @@ Function *NFunDec::funcodegen(Type *retType) {
 }
 Value *NDef::codegen() {
   // begin
-
+  auto retType=nSpecifier.getType();
+  auto current=nDecList;
+  while(current!=nullptr){
+    auto nowID=current->dec.vardec.Id;
+    if(namedValues[std::string(nowID.name)]){
+      printSemanticError(3,line,"");
+      return nullptr;
+    }
+    AllocaInst* ret=builder->CreateAlloca(retType,nullptr,nowID.name);
+    Value* exp;
+    if(current->dec.exp!=nullptr){
+      exp=current->dec.exp->codegen();
+    }
+    else{
+      exp=Constant::getNullValue(retType);
+    }
+    builder->CreateStore(exp,ret);
+    namedValues[std::string(nowID.name)]=ret;
+    current=current->nDecList;
+  }
   return nullptr;
   // end
 }
 Value *NDefList::codegen() {
   // begin
-
-  return nullptr;
+  Value *ret=nDef.codegen();
+  if(nDefList){
+    ret=nDefList->codegen();
+  }
+  return ret;
   // end
 }
 Value *NStmtList::codegen() {
@@ -692,8 +810,17 @@ Value *NCompSt::codegen() {
 Value *NExpStmt::codegen() { return exp.codegen(); }
 Value *NCompStStmt::codegen() {
   // begin
-
-  return nullptr;
+  std::map<std::string, AllocaInst *> oldNamedValues, oldCurNamedValues ;
+  copy(namedValues.begin(),namedValues.end(),std::inserter(oldNamedValues,oldNamedValues.begin()));
+  copy(curNamedValues.begin(),curNamedValues.end(),std::inserter(oldCurNamedValues,oldCurNamedValues.begin()));
+  curNamedValues.insert(namedValues.begin(),namedValues.end());
+  namedValues.clear();
+  Value* retVal = compst.codegen();
+  curNamedValues.clear();
+  namedValues.clear();
+  copy(oldNamedValues.begin(),oldNamedValues.end(),std::inserter(namedValues,namedValues.begin()));
+  copy(oldCurNamedValues.begin(),oldCurNamedValues.end(),std::inserter(curNamedValues,curNamedValues.begin()));
+  return retVal;
   // end
 }
 Value *NRetutnStmt::codegen() {
@@ -704,7 +831,10 @@ Value *NRetutnStmt::codegen() {
   auto *retVal = exp.codegen();
   // check the return type and fundec type
   // begin
-
+  if(retVal->getType()->getPointerTo()!=theFun->getReturnType()->getPointerTo()){
+    printSemanticError(7,line,"");
+    return nullptr;
+  }
   // end
     builder->CreateRet(retVal);
   return retVal;
@@ -712,23 +842,77 @@ Value *NRetutnStmt::codegen() {
 Value *NIfStmt::codegen() {
   Function *theFun = builder->GetInsertBlock()->getParent();
   // begin
+  Value* cmp = exp.codegen();
+  if(cmp == nullptr){
+    return nullptr;
+  }
+  Value* condVal = builder->CreateICmpNE(cmp,Constant::getNullValue(cmp->getType()),"cond");
 
-  return nullptr;
+  BasicBlock *thenb = BasicBlock::Create(*theContext,"then",theFun);
+  BasicBlock *ifcontb = BasicBlock::Create(*theContext,"ifcont");
+
+  builder->CreateCondBr(condVal,thenb,ifcontb);
+  builder->SetInsertPoint(thenb);
+  Value* retVal = stmt.codegen();
+  builder->CreateBr(ifcontb);
+
+  theFun->getBasicBlockList().push_back(ifcontb);
+  builder->SetInsertPoint(ifcontb);
   // end
+  return retVal;
 }
 Value *NIfElseStmt::codegen() {
   Function *theFun = builder->GetInsertBlock()->getParent();
   // begin
+  Value* cmp = exp.codegen();
+  Value* retVal = nullptr;
+  if(cmp == nullptr){
+    return nullptr;
+  }
+  Value* condVal = builder->CreateICmpNE(cmp,Constant::getNullValue(cmp->getType()),"cond");
+  BasicBlock *thenb = BasicBlock::Create(*theContext,"then",theFun);
+  BasicBlock *elseb = BasicBlock::Create(*theContext,"else",theFun);
+  BasicBlock *ifcontb = BasicBlock::Create(*theContext,"ifcont");
 
-  return nullptr;
+  builder->CreateCondBr(condVal,thenb,elseb);
+  builder->SetInsertPoint(thenb);
+  retVal = stmt.codegen();
+  builder->CreateBr(ifcontb);
+
+  builder->SetInsertPoint(elseb);
+  retVal = stmt_else.codegen();
+  builder->CreateBr(ifcontb);
+
+  theFun->getBasicBlockList().push_back(ifcontb);
+  builder->SetInsertPoint(ifcontb);
+  return retVal;
   // end
 }
 Value *NWhileStmt::codegen() {
   Function *theFun = builder->GetInsertBlock()->getParent();
   BasicBlock *condb = BasicBlock::Create(*theContext, "cond", theFun);
   // begin
+  BasicBlock *thenb = BasicBlock::Create(*theContext,"then",theFun);
+  BasicBlock *whilecontb = BasicBlock::Create(*theContext,"whilecont");
 
-  return nullptr;
+  builder->CreateBr(condb);
+  builder->SetInsertPoint(condb);
+
+  Value* cmp = exp.codegen();
+  Value* retVal = nullptr;
+  if(cmp == nullptr){
+    return nullptr;
+  }
+  Value* condVal = builder->CreateICmpNE(cmp,Constant::getNullValue(cmp->getType()),"cond");
+  builder->CreateCondBr(condVal,thenb,whilecontb);
+
+  builder->SetInsertPoint(thenb);
+  retVal = stmt.codegen();
+  builder->CreateBr(condb);
+
+  theFun->getBasicBlockList().push_back(whilecontb);
+  builder->SetInsertPoint(whilecontb);
+  return retVal;
   // end
 }
 Value *NBreakStmt::codegen() {
@@ -817,3 +1001,4 @@ Value *NProgram::codegen() {
     return nullptr;
   return lastCode;
 }
+

@@ -12,6 +12,7 @@ define dso_local i32 @main() #0 {
   %3 = call i32 @getchar()
   store i32 %3, i32* %2, align 4
   %4 = load i32, i32* %2, align 4
+  
   %5 = icmp eq i32 %4, 97
   br i1 %5, label %6, label %8
 

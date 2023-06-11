@@ -1654,367 +1654,367 @@ yyreduce:
 
   case 5:
 #line 111 "parser.y"
-                                  {}
+                                  {(yyval.nExtDef)=new NExtDef(*(yyvsp[-2].nSpecifier),(yyvsp[-1].nExtDecList));(yyval.nExtDef)->line=(yyvsp[-2].nSpecifier)->line;}
 #line 1659 "parser.cpp"
     break;
 
   case 6:
 #line 112 "parser.y"
-                         {}
+                         {(yyval.nExtDef)=new NExtDef(*(yyvsp[-1].nSpecifier));(yyval.nExtDef)->line=(yyvsp[-1].nSpecifier)->line;}
 #line 1665 "parser.cpp"
     break;
 
   case 7:
 #line 113 "parser.y"
-                                  {}
+                                  {(yyval.nExtDef)=new NExtDef(*(yyvsp[-2].nSpecifier),(yyvsp[-1].nFunDec),(yyvsp[0].nCompSt));(yyval.nExtDef)->line=(yyvsp[-2].nSpecifier)->line;}
 #line 1671 "parser.cpp"
     break;
 
   case 8:
 #line 115 "parser.y"
-                   {}
+                   {(yyval.nExtDecList)=new NExtDecList(*(yyvsp[0].nVarDec),nullptr);(yyval.nExtDecList)->line=(yyvsp[0].nVarDec)->line;}
 #line 1677 "parser.cpp"
     break;
 
   case 9:
 #line 116 "parser.y"
-                                  {}
+                                  {(yyval.nExtDecList)=new NExtDecList(*(yyvsp[-2].nVarDec),(yyvsp[0].nExtDecList));(yyval.nExtDecList)->line=(yyvsp[-2].nVarDec)->line;}
 #line 1683 "parser.cpp"
     break;
 
   case 10:
 #line 120 "parser.y"
-                {}
+                {std::string temp=std::string((yyvsp[0].type_id));(yyval.nSpecifier)=new NSpecifier(temp);(yyval.nSpecifier)->line=yylineno;}
 #line 1689 "parser.cpp"
     break;
 
   case 11:
 #line 121 "parser.y"
-                          {}
+                          {(yyval.nSpecifier)=(yyvsp[0].nStructSpecifier);(yyval.nSpecifier)->line=(yyvsp[0].nStructSpecifier)->line;}
 #line 1695 "parser.cpp"
     break;
 
   case 12:
 #line 124 "parser.y"
-                                             {}
+                                             {(yyval.nStructSpecifier)=new NStructSpecifier((yyvsp[-3].nIdentifier),(yyvsp[-1].nDefList));(yyval.nStructSpecifier)->line=(yyvsp[-3].nIdentifier)->line;}
 #line 1701 "parser.cpp"
     break;
 
   case 13:
 #line 125 "parser.y"
-                     {}
+                     {(yyval.nStructSpecifier)=new NStructSpecifier((yyvsp[0].nIdentifier));(yyval.nStructSpecifier)->line=(yyvsp[0].nIdentifier)->line;}
 #line 1707 "parser.cpp"
     break;
 
   case 14:
 #line 128 "parser.y"
-           {}
+           {(yyval.nIdentifier)=new NIdentifier(std::string((yyvsp[0].type_id)));(yyval.nIdentifier)->line=yylineno;}
 #line 1713 "parser.cpp"
     break;
 
   case 15:
 #line 129 "parser.y"
-          {}
+          {(yyval.nIdentifier)=nullptr;}
 #line 1719 "parser.cpp"
     break;
 
   case 16:
 #line 132 "parser.y"
-        {}
+        {(yyval.nIdentifier)=new NIdentifier(std::string((yyvsp[0].type_id)));(yyval.nIdentifier)->line=yylineno;}
 #line 1725 "parser.cpp"
     break;
 
   case 17:
 #line 136 "parser.y"
-            {}
+            {auto t=new NIdentifier(std::string((yyvsp[0].type_id)));(yyval.nVarDec)=new NVarDec(*t);(yyval.nVarDec)->line=yylineno;}
 #line 1731 "parser.cpp"
     break;
 
   case 18:
 #line 137 "parser.y"
-                           {}
+                           {(yyvsp[-3].nVarDec)->v.push_back((yyvsp[-1].type_int));}
 #line 1737 "parser.cpp"
     break;
 
   case 19:
 #line 139 "parser.y"
-                         {}
+                         {auto t=new NIdentifier(std::string((yyvsp[-3].type_id)));(yyval.nFunDec)=new NFunDec(*t,(yyvsp[-1].nVarList));(yyval.nFunDec)->line=yylineno;}
 #line 1743 "parser.cpp"
     break;
 
   case 20:
 #line 140 "parser.y"
-                   {}
+                   {auto t=new NIdentifier(std::string((yyvsp[-2].type_id)));(yyval.nFunDec)=new NFunDec(*t,nullptr);(yyval.nFunDec)->line=yylineno;}
 #line 1749 "parser.cpp"
     break;
 
   case 21:
 #line 142 "parser.y"
-                  {}
+                  {(yyval.nVarList)=new NVarList(*(yyvsp[0].nParamDec),nullptr);(yyval.nVarList)->line=(yyvsp[0].nParamDec)->line;}
 #line 1755 "parser.cpp"
     break;
 
   case 22:
 #line 143 "parser.y"
-                                 {}
+                                 {(yyval.nVarList)=new NVarList(*(yyvsp[-2].nParamDec),(yyvsp[0].nVarList));(yyval.nVarList)->line=(yyvsp[-2].nParamDec)->line;}
 #line 1761 "parser.cpp"
     break;
 
   case 23:
 #line 145 "parser.y"
-                           {}
+                           {(yyval.nParamDec)=new NParamDec(*(yyvsp[-1].nSpecifier),*(yyvsp[0].nVarDec));(yyval.nParamDec)->line=(yyvsp[-1].nSpecifier)->line;}
 #line 1767 "parser.cpp"
     break;
 
   case 24:
 #line 149 "parser.y"
-                                 {}
+                                 {(yyval.nCompSt)=new NCompSt((yyvsp[-2].nDefList),(yyvsp[-1].nStmtList));(yyval.nCompSt)->line=(yyvsp[-2].nDefList)->line-1;}
 #line 1773 "parser.cpp"
     break;
 
   case 25:
 #line 151 "parser.y"
-          {}
+          {(yyval.nStmtList)=nullptr;}
 #line 1779 "parser.cpp"
     break;
 
   case 26:
 #line 152 "parser.y"
-                         {}
+                         {(yyval.nStmtList)=new NStmtList(*(yyvsp[-1].nStmt),(yyvsp[0].nStmtList));(yyval.nStmtList)->line=(yyvsp[-1].nStmt)->line;}
 #line 1785 "parser.cpp"
     break;
 
   case 27:
 #line 154 "parser.y"
-                   {}
+                   {(yyval.nStmt)=new NExpStmt(*(yyvsp[-1].nExpression));(yyval.nStmt)->line=(yyvsp[-1].nExpression)->line;}
 #line 1791 "parser.cpp"
     break;
 
   case 28:
 #line 155 "parser.y"
-                 {}
+                 {(yyval.nStmt)=new NCompStStmt(*(yyvsp[0].nCompSt));(yyval.nStmt)->line=yylineno;}
 #line 1797 "parser.cpp"
     break;
 
   case 29:
 #line 156 "parser.y"
-                          {}
+                          {(yyval.nStmt)=new NRetutnStmt(*(yyvsp[-1].nExpression));(yyval.nStmt)->line=(yyvsp[-1].nExpression)->line;}
 #line 1803 "parser.cpp"
     break;
 
   case 30:
 #line 157 "parser.y"
-                                                    {}
+                                                    {(yyval.nStmt)=new NIfStmt(*(yyvsp[-2].nExpression),*(yyvsp[0].nStmt));(yyval.nStmt)->line=(yyvsp[-2].nExpression)->line;}
 #line 1809 "parser.cpp"
     break;
 
   case 31:
 #line 158 "parser.y"
-                                      {}
+                                      {(yyval.nStmt)=new NIfElseStmt(*(yyvsp[-4].nExpression),*(yyvsp[-2].nStmt),*(yyvsp[0].nStmt));(yyval.nStmt)->line=(yyvsp[-4].nExpression)->line;}
 #line 1815 "parser.cpp"
     break;
 
   case 32:
 #line 159 "parser.y"
-                               {}
+                               {(yyval.nStmt)=new NWhileStmt(*(yyvsp[-2].nExpression),*(yyvsp[0].nStmt));(yyval.nStmt)->line=(yyvsp[-2].nExpression)->line;}
 #line 1821 "parser.cpp"
     break;
 
   case 33:
 #line 160 "parser.y"
-                     {}
+                     {(yyval.nStmt)=new NBreakStmt();(yyval.nStmt)->line=yylineno;}
 #line 1827 "parser.cpp"
     break;
 
   case 34:
 #line 164 "parser.y"
-         {}
+         {(yyval.nDefList)=nullptr;}
 #line 1833 "parser.cpp"
     break;
 
   case 35:
 #line 165 "parser.y"
-                      {}
+                      {(yyval.nDefList)=new NDefList(*(yyvsp[-1].nDef),(yyvsp[0].nDefList));(yyval.nDefList)->line=(yyvsp[-1].nDef)->line;}
 #line 1839 "parser.cpp"
     break;
 
   case 36:
 #line 167 "parser.y"
-                            {}
+                            {(yyval.nDef)=new NDef(*(yyvsp[-2].nSpecifier),(yyvsp[-1].nDecList));(yyval.nDef)->line=(yyvsp[-2].nSpecifier)->line;}
 #line 1845 "parser.cpp"
     break;
 
   case 37:
 #line 170 "parser.y"
-               {}
+               {(yyval.nDecList)=new NDecList(*(yyvsp[0].nDec),nullptr);(yyval.nDecList)->line=(yyvsp[0].nDec)->line;}
 #line 1851 "parser.cpp"
     break;
 
   case 38:
 #line 171 "parser.y"
-                             {}
+                             {(yyval.nDecList)=new NDecList(*(yyvsp[-2].nDec),(yyvsp[0].nDecList));(yyval.nDecList)->line=(yyvsp[-2].nDec)->line;}
 #line 1857 "parser.cpp"
     break;
 
   case 39:
 #line 173 "parser.y"
-                  {}
+                  {(yyval.nDec)=new NDec(*(yyvsp[0].nVarDec));(yyval.nDec)->line=(yyvsp[0].nVarDec)->line;}
 #line 1863 "parser.cpp"
     break;
 
   case 40:
 #line 174 "parser.y"
-                               {}
+                               {(yyval.nDec)=new NDec(*(yyvsp[-2].nVarDec),(yyvsp[0].nExpression));(yyval.nDec)->line=(yyvsp[-2].nVarDec)->line;}
 #line 1869 "parser.cpp"
     break;
 
   case 41:
 #line 178 "parser.y"
-                           {}
+                           {(yyval.nExpression)=new NAssignment(*(new std::string("ASSIGNOP")),*(yyvsp[-2].nExpression),ASSIGNOP,*(yyvsp[0].nExpression));(yyval.nExpression)->line=yylineno;}
 #line 1875 "parser.cpp"
     break;
 
   case 42:
 #line 180 "parser.y"
-                            {}
+                            {(yyval.nExpression)=new NAssignment(*(new std::string("PLUSASS")),*(yyvsp[-2].nExpression),PLUSASS,*(yyvsp[0].nExpression));(yyval.nExpression)->line=yylineno;}
 #line 1881 "parser.cpp"
     break;
 
   case 43:
 #line 181 "parser.y"
-                             {}
+                             {(yyval.nExpression)=new NAssignment(*(new std::string("MINUSASS")),*(yyvsp[-2].nExpression),MINUSASS,*(yyvsp[0].nExpression));(yyval.nExpression)->line=yylineno;}
 #line 1887 "parser.cpp"
     break;
 
   case 44:
 #line 182 "parser.y"
-                            {}
+                            {(yyval.nExpression)=new NAssignment(*(new std::string("STARASS")),*(yyvsp[-2].nExpression),STARASS,*(yyvsp[0].nExpression));(yyval.nExpression)->line=yylineno;}
 #line 1893 "parser.cpp"
     break;
 
   case 45:
 #line 183 "parser.y"
-                           {}
+                           {(yyval.nExpression)=new NAssignment(*(new std::string("DIVASS")),*(yyvsp[-2].nExpression),DIVASS,*(yyvsp[0].nExpression));(yyval.nExpression)->line=yylineno;}
 #line 1899 "parser.cpp"
     break;
 
   case 46:
 #line 185 "parser.y"
-                                         {}
+                                         {(yyval.nExpression)=new NSingleOperator(*(new std::string("PLUSPLUS")),PLUSPLUS,*(yyvsp[0].nExpression));(yyval.nExpression)->line=yylineno;}
 #line 1905 "parser.cpp"
     break;
 
   case 47:
 #line 186 "parser.y"
-                                             {}
+                                             {(yyval.nExpression)=new NSingleOperator(*(new std::string("MINUSMINUS")),MINUSMINUS,*(yyvsp[0].nExpression));(yyval.nExpression)->line=yylineno;}
 #line 1911 "parser.cpp"
     break;
 
   case 48:
 #line 187 "parser.y"
-                         {}
+                         {(yyval.nExpression)=new NSingleOperator(*(new std::string("PLUSPLUS")),PLUSPLUS,*(yyvsp[-1].nExpression));(yyval.nExpression)->line=yylineno;}
 #line 1917 "parser.cpp"
     break;
 
   case 49:
 #line 188 "parser.y"
-                          {}
+                          {(yyval.nExpression)=new NSingleOperator(*(new std::string("MINUSMINUS")),MINUSMINUS,*(yyvsp[-1].nExpression));(yyval.nExpression)->line=yylineno;}
 #line 1923 "parser.cpp"
     break;
 
   case 50:
 #line 190 "parser.y"
-                        {}
+                        {(yyval.nExpression)=new NBinaryOperator(*(new std::string("AND")),*(yyvsp[-2].nExpression),AND,*(yyvsp[0].nExpression));(yyval.nExpression)->line=yylineno;}
 #line 1929 "parser.cpp"
     break;
 
   case 51:
 #line 191 "parser.y"
-                        {}
+                        {(yyval.nExpression)=new NBinaryOperator(*(new std::string("OR")),*(yyvsp[-2].nExpression),OR,*(yyvsp[0].nExpression));(yyval.nExpression)->line=yylineno;}
 #line 1935 "parser.cpp"
     break;
 
   case 52:
 #line 192 "parser.y"
-                        {}
+                        {(yyval.nExpression)=new NBinaryOperator(*(new std::string((yyvsp[-1].type_id))),*(yyvsp[-2].nExpression),*(yyvsp[-1].type_id),*(yyvsp[0].nExpression));(yyval.nExpression)->line=yylineno;}
 #line 1941 "parser.cpp"
     break;
 
   case 53:
 #line 193 "parser.y"
-                        {}
+                        {(yyval.nExpression)=new NBinaryOperator(*(new std::string("PLUS")),*(yyvsp[-2].nExpression),PLUS,*(yyvsp[0].nExpression));(yyval.nExpression)->line=yylineno;}
 #line 1947 "parser.cpp"
     break;
 
   case 54:
 #line 194 "parser.y"
-                        {}
+                        {(yyval.nExpression)=new NBinaryOperator(*(new std::string("MINUS")),*(yyvsp[-2].nExpression),MINUS,*(yyvsp[0].nExpression));(yyval.nExpression)->line=yylineno;}
 #line 1953 "parser.cpp"
     break;
 
   case 55:
 #line 195 "parser.y"
-                        {}
+                        {(yyval.nExpression)=new NBinaryOperator(*(new std::string("STAR")),*(yyvsp[-2].nExpression),STAR,*(yyvsp[0].nExpression));(yyval.nExpression)->line=yylineno;}
 #line 1959 "parser.cpp"
     break;
 
   case 56:
 #line 196 "parser.y"
-                        {}
+                        {(yyval.nExpression)=new NBinaryOperator(*(new std::string("DIV")),*(yyvsp[-2].nExpression),DIV,*(yyvsp[0].nExpression));(yyval.nExpression)->line=yylineno;}
 #line 1965 "parser.cpp"
     break;
 
   case 57:
 #line 198 "parser.y"
-                        {}
+                        {(yyval.nExpression)=new NBinaryOperator(*(new std::string("MOD")),*(yyvsp[-2].nExpression),MOD,*(yyvsp[0].nExpression));(yyval.nExpression)->line=yylineno;}
 #line 1971 "parser.cpp"
     break;
 
   case 58:
 #line 200 "parser.y"
-                        {}
+                        {(yyval.nExpression)=new NParenOperator(*(yyvsp[-1].nExpression));(yyval.nExpression)->line=yylineno;}
 #line 1977 "parser.cpp"
     break;
 
   case 59:
 #line 201 "parser.y"
-                                   {}
+                                   {(yyval.nExpression)=new NSingleOperator(*(new std::string("MINUS")),MINUS,*(yyvsp[0].nExpression));(yyval.nExpression)->line=yylineno;}
 #line 1983 "parser.cpp"
     break;
 
   case 60:
 #line 202 "parser.y"
-                        {}
+                        {(yyval.nExpression)=new NSingleOperator(*(new std::string("NOT")),NOT,*(yyvsp[0].nExpression));(yyval.nExpression)->line=yylineno;}
 #line 1989 "parser.cpp"
     break;
 
   case 61:
 #line 203 "parser.y"
-                        {}
+                        {auto t=NIdentifier(std::string((yyvsp[-3].type_id)));(yyval.nExpression)=new NMethodCall(t,(yyvsp[-1].nArgs));(yyval.nExpression)->line=yylineno;}
 #line 1995 "parser.cpp"
     break;
 
   case 62:
 #line 204 "parser.y"
-                        {}
+                        {auto t=NIdentifier(std::string((yyvsp[-2].type_id)));(yyval.nExpression)=new NMethodCall(t);(yyval.nExpression)->line=yylineno;}
 #line 2001 "parser.cpp"
     break;
 
   case 63:
 #line 205 "parser.y"
-                        {}
+                        {(yyval.nExpression)=new NListOperator(*(yyvsp[-3].nExpression),*(yyvsp[-1].nExpression));(yyval.nExpression)->line=yylineno;}
 #line 2007 "parser.cpp"
     break;
 
   case 64:
 #line 206 "parser.y"
-                        {}
+                        {auto t=NIdentifier(std::string((yyvsp[0].type_id)));(yyval.nExpression)=new NDotOperator(*(yyvsp[-2].nExpression),t);(yyval.nExpression)->line=yylineno;}
 #line 2013 "parser.cpp"
     break;
 
   case 65:
 #line 207 "parser.y"
-                        {}
+                        {(yyval.nExpression)=new NIdentifier(std::string((yyvsp[0].type_id)));(yyval.nExpression)->line=yylineno;}
 #line 2019 "parser.cpp"
     break;
 
@@ -2026,25 +2026,25 @@ yyreduce:
 
   case 67:
 #line 209 "parser.y"
-                        {}
+                        {(yyval.nExpression)=new NFloat((yyvsp[0].type_float));(yyval.nExpression)->line=yylineno;}
 #line 2031 "parser.cpp"
     break;
 
   case 68:
 #line 210 "parser.y"
-                        {}
+                        {(yyval.nExpression)=new NChar((yyvsp[0].type_char));(yyval.nExpression)->line=yylineno;}
 #line 2037 "parser.cpp"
     break;
 
   case 69:
 #line 212 "parser.y"
-                       {}
+                       {(yyval.nArgs)=new NArgs(*(yyvsp[-2].nExpression),(yyvsp[0].nArgs));(yyval.nArgs)->line=(yyvsp[-2].nExpression)->line;}
 #line 2043 "parser.cpp"
     break;
 
   case 70:
 #line 213 "parser.y"
-              {}
+              {(yyval.nArgs)=new NArgs(*(yyvsp[0].nExpression),nullptr);(yyval.nArgs)->line=(yyvsp[0].nExpression)->line;}
 #line 2049 "parser.cpp"
     break;
 

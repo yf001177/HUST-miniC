@@ -33,7 +33,7 @@ extern int yylex(void);
 //union的默认结构体类型为YYSTYPE，相当于自己把YYSTYPE重新定义为union类型。所以相应的词法分析中yylval也变为union类型。
 //这个union类型-d选项编译时会放在头文件中
 //% type  用于定义非终结符的语义值类型
-%type  <p> program ExtDefList ExtDef Specifier ExtDecList DecList VarDec FunDec CompSt DefList VarList ParamDec Dec Def StmtList Exp Stmt Args OptTag  Tag StructSpecifier
+%type  <p> program ExtDefList ExtDef Specifier ExtDecList DecList VarDec FunDec CompSt DefList VarList ParamDec Dec Def StmtList Exp Stmt Stmt1 Args OptTag  Tag StructSpecifier
 //% token 用于定义终结符的语义值类型
 %token <type_int> INT                   //指定INT的语义值是type_int，由词法分析得到的数值
 %token <type_id> ID RELOP TYPE STRUCT   //指定ID,RELOP 的语义值是type_id，由词法分析得到的标识符字符串mmecpy得到的
@@ -118,7 +118,7 @@ Stmt:
         CompSt {std::cout<<"Stmt"<<std::endl;}|
         RETURN Exp SEMI {std::cout<<"Stmt"<<std::endl;}|
         IF LP Exp RP Stmt {std::cout<<"Stmt"<<std::endl;}|
-        IF LP Exp RP Stmt ELSE Stmt {std::cout<<"Stmt"<<std::endl;}|
+        IF LP Exp RP Stmt1 ELSE Stmt {std::cout<<"Stmt"<<std::endl;}|
         WHILE LP Exp RP Stmt {std::cout<<"Stmt"<<std::endl;};
 
 DefList:

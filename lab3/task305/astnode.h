@@ -68,7 +68,8 @@ public:
 class NIdentifier : public NExpression {
 public:
   // std::string name;
-  NIdentifier(const std::string &name) { this->name = name; }
+  int op;
+  NIdentifier(int op,const std::string &name) { this->name = name;this->op=op; }
   int parse();
 
 };
@@ -271,7 +272,11 @@ public:
 };
 /*Statements*/
 
-class NStatement : public Node {};
+class NStatement : public Node {
+public:
+  std::string getNodeName() { return "Statement"; }
+  virtual int parse() {return 0;}
+};
 
 class NStmt : public NStatement {
 public:

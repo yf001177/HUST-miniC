@@ -27,11 +27,21 @@ int NInteger::parse() {
   return 0;
 }
 int NFloat::parse() {
-  
+  printGrammerInfo(getNodeName(), line);
+  spaces += 2;
+  printspaces();
+  std::cout << "FLOAT"
+            << ": " << value << std::endl;
+  spaces -= 2;
   return 0;
 }
 int NChar::parse() {
-  
+  printGrammerInfo(getNodeName(), line);
+  spaces += 2;
+  printspaces();
+  std::cout << "CHAR"
+            << ": " << value << std::endl;
+  spaces -= 2;
   return 0;
 }
 int NIdentifier::parse() {
@@ -45,7 +55,13 @@ int NIdentifier::parse() {
   return 0;
 }
 int NDotOperator::parse() {
-  
+  printGrammerInfo(getNodeName(), line);
+
+  spaces += 2;
+  printspaces();
+  std::cout << "ID"
+            << ":" << exp.name << std::endl;
+  spaces -= 2;
   return 0;
 }
 int NListOperator::parse() {

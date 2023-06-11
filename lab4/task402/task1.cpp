@@ -124,7 +124,47 @@ int main(int argc, char *argv[]) {
   //判断参数是否符合 自行处理
   Value *callputchar = builder->CreateCall(calleeF, argsV, "callputchar");
   // begin
-  
+  argsV.clear();
+  Value *const_2 = ConstantInt::get(*theContext,APInt(32,'U',true));
+  builder->CreateStore(const_2,alloca_a);
+  Value *load_a5=builder->CreateLoad(alloca_a->getAllocatedType(),alloca_a,"a");
+  argsV.push_back(load_a5);
+  callputchar=builder->CreateCall(calleeF,argsV,"callputchar");
+
+  argsV.clear();
+  Value *const_3 = ConstantInt::get(*theContext,APInt(32,'S',true));
+  builder->CreateStore(const_3,alloca_a);
+  Value *load_a6=builder->CreateLoad(alloca_a->getAllocatedType(),alloca_a,"a");
+  argsV.push_back(load_a6);
+  callputchar=builder->CreateCall(calleeF,argsV,"callputchar");
+
+  argsV.clear();
+  Value *const_4 = ConstantInt::get(*theContext,APInt(32,'T',true));
+  builder->CreateStore(const_4,alloca_a);
+  Value *load_a7=builder->CreateLoad(alloca_a->getAllocatedType(),alloca_a,"a");
+  argsV.push_back(load_a7);
+  callputchar=builder->CreateCall(calleeF,argsV,"callputchar");
+
+  argsV.clear();
+  Value *const_5 = ConstantInt::get(*theContext,APInt(32,'C',true));
+  builder->CreateStore(const_5,alloca_a);
+  Value *load_a8=builder->CreateLoad(alloca_a->getAllocatedType(),alloca_a,"a");
+  argsV.push_back(load_a8);
+  callputchar=builder->CreateCall(calleeF,argsV,"callputchar");
+
+  argsV.clear();
+  Value *const_6 = ConstantInt::get(*theContext,APInt(32,'S',true));
+  builder->CreateStore(const_6,alloca_a);
+  Value *load_a9=builder->CreateLoad(alloca_a->getAllocatedType(),alloca_a,"a");
+  argsV.push_back(load_a9);
+  callputchar=builder->CreateCall(calleeF,argsV,"callputchar");
+
+  argsV.clear();
+  Value *const_7 = ConstantInt::get(*theContext,APInt(32,'E',true));
+  builder->CreateStore(const_7,alloca_a);
+  Value *load_a10=builder->CreateLoad(alloca_a->getAllocatedType(),alloca_a,"a");
+  argsV.push_back(load_a10);
+  callputchar=builder->CreateCall(calleeF,argsV,"callputchar");
   // end
   //设置返回值
   builder->CreateRet(const_1);
